@@ -2,53 +2,108 @@ body {
     width: 400px;
     padding: 15px;
     font-family: Arial, sans-serif;
+    color: #333;
 }
 
+/* Product Info Styles */
 #product-info {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     line-height: 1.5;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
 }
 
-#sustainability-score {
+/* Sustainability Grid Layout */
+.sustainability-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.metric-card {
+    padding: 15px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Progress Ring Styles */
+.progress-ring {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 10px;
+}
+
+.progress-ring circle {
+    fill: none;
+    stroke-width: 6;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+}
+
+.progress-ring__background {
+    stroke: #eee;
+}
+
+.progress-ring__circle {
+    stroke: #4CAF50;
+    stroke-dasharray: 226;
+    transition: stroke-dashoffset 0.5s ease-out;
+}
+
+/* Score Color Classes */
+.low .progress-ring__circle { stroke: #ff4444; }
+.medium .progress-ring__circle { stroke: #ffc107; }
+.high .progress-ring__circle { stroke: #4CAF50; }
+
+.score {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-size: 1.2em;
     font-weight: bold;
-    color: #2ecc71;
-    margin: 10px 0;
 }
 
-#product-features, #additional-details {
-    margin: 15px 0;
-    border-top: 1px solid #eee;
-    padding-top: 10px;
+/* Text Elements */
+h3 {
+    margin: 10px 0 5px;
+    font-size: 0.9em;
+    color: #666;
 }
 
-h4 {
-    color: #3498db;
-    margin: 10px 0;
+.justification {
+    padding: 15px;
+    margin-top: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-size: 0.9em;
 }
 
-ul {
-    margin: 5px 0;
-    padding-left: 20px;
-}
-
-li {
-    margin: 5px 0;
-    line-height: 1.4;
-}
-
+/* Button Styles */
 .button-container {
     display: flex;
     gap: 10px;
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
 button {
-    padding: 8px 16px;
+    flex: 1;
+    padding: 10px;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.2s ease;
 }
 
 #refresh-btn {
@@ -69,6 +124,82 @@ button:active {
     transform: scale(0.98);
 }
 
+/* Error and Loading States */
 .error {
     color: #e74c3c;
+    padding: 10px;
+    background: #fdeded;
+    border-radius: 4px;
+}
+
+.loading {
+    color: #666;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 360px) {
+    body {
+        width: 340px;
+        padding: 10px;
+    }
+    
+    .sustainability-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Final Score Specific Styles */
+.metric-card.final-score {
+    grid-column: 1 / -1;
+    background: #f8f9fa;
+    padding: 20px;
+}
+
+.metric-card.final-score .progress-ring {
+    width: 100px;
+    height: 100px;
+}
+
+.metric-card.final-score circle {
+    stroke-width: 8;
+    r: 45;
+}
+
+.metric-card.final-score .score {
+    font-size: 1.8em;
+}
+
+.metric-card.final-score h3 {
+    font-size: 1.1em;
+    color: #444;
+    margin-top: 15px;
+}
+
+/* Final Score Color Classes */
+.metric-card.final-score.low .progress-ring__circle { 
+    stroke: #ff4444;
+    stroke-width: 8;
+}
+
+.metric-card.final-score.medium .progress-ring__circle { 
+    stroke: #ffc107;
+    stroke-width: 8;
+}
+
+.metric-card.final-score.high .progress-ring__circle { 
+    stroke: #4CAF50;
+    stroke-width: 8;
+}
+
+/* Add animation for better visibility */
+.metric-card.final-score .progress-ring__circle {
+    animation: ring-pulse 1.5s ease-out;
+}
+
+@keyframes ring-pulse {
+    0% { stroke-width: 0; }
+    50% { stroke-width: 10; }
+    100% { stroke-width: 8; }
 }

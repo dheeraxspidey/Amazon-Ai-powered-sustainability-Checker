@@ -68,40 +68,55 @@ function updateProductDisplay() {
 }
 
 function refreshProductData() {
-    const sustainabilityScore = document.getElementById('sustainability-score');
-    sustainabilityScore.textContent = 'Refreshing product data...';
+    console.log("Refreshing product data...");
     
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        chrome.scripting.executeScript({
-            target: { tabId: tabs[0].id },
-            files: ['content.js']
-        }, (results) => {
-            console.log('Product data refreshed');
-            updateProductDisplay();
+    // Clear existing displays
+    const factorsDisplay = document.getElementById('factorsDisplay');
+    const errorDisplay = document.getElementById('errorDisplay');
+    
+    if (factorsDisplay) factorsDisplay.innerHTML = '<div class="loading">Refreshing data...</div>';
+    if (errorDisplay) errorDisplay.textContent = '';
+
+    // Get fresh product data from content script
+    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+        chrome.tabs.sendMessage(tabs[0].id, {action: "forceRefresh"}, (response) => {
+            if (chrome.runtime.lastError) {
+                console.error("Refresh error:", chrome.runtime.lastError);
+                if (errorDisplay) errorDisplay.textContent = 'Error refreshing data. Try reloading the page.';
+                return;
+            }
+            
+            if (response?.success) {
+                console.log("Refresh successful");
+                updateProductDisplay();
+            } else {
+                console.log("Refresh failed");
+                if (errorDisplay) errorDisplay.textContent = 'Failed to refresh product data';
+            }
         });
     });
 }
 
 function fetchSustainabilityScore() {
+    const factorsDisplay = document.getElementById('factorsDisplay');
     const sustainabilityScore = document.getElementById('sustainability-score');
-    sustainabilityScore.textContent = 'Calculating sustainability score...';
+    factorsDisplay.innerHTML = '<div class="loading">Calculating sustainability score...</div>';
 
     chrome.storage.local.get("product", ({ product }) => {
         if (product) {
             chrome.runtime.sendMessage(
                 { action: "calculateSustainability", product: product },
                 (response) => {
-                    if (response && response.sustainabilityScore) {
-                        sustainabilityScore.textContent = response.sustainabilityScore;
-                    } else if (response && response.error) {
-                        sustainabilityScore.textContent = response.error;
-                    } else {
-                        sustainabilityScore.textContent = 'Score not available';
+                    if (response?.sustainabilityFactors) {
+                        factorsDisplay.innerHTML = response.sustainabilityFactors;
+                        sustainabilityScore.textContent = ''; // Clear the old text display
+                    } else if (response?.error) {
+                        factorsDisplay.innerHTML = `<div class="error">${response.error}</div>`;
                     }
                 }
             );
         } else {
-            sustainabilityScore.textContent = 'No product data available. Please refresh product data first.';
+            factorsDisplay.innerHTML = '<div class="error">No product data available</div>';
         }
     });
 }
