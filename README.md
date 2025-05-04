@@ -32,7 +32,7 @@ This Chrome extension evaluates the sustainability of electronic products by ext
 ## 📌 Installation Guide
 1. Clone this repository:
    sh
-   git clone https://github.com/yourusername/sustainable-shopping-extension.git
+   git clone [https://github.com/yourusername/sustainable-shopping-extension.git](https://github.com/dheeraxspidey/Amazon-Ai-powered-sustainability-Checker.git)
    cd sustainable-shopping-extension
    
 2. Load the extension in Chrome:
