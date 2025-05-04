@@ -1,4 +1,7 @@
 # 📦 Sustainable Shopping Chrome Extension
+![image](https://github.com/user-attachments/assets/9813b199-c6ce-4883-9345-610b722ee78a)
+_______________________________________________________________________________________
+![image](https://github.com/user-attachments/assets/7b9d8bb6-ee7a-495e-bd98-599bd8179483)
 
 ## 📝 Project Overview
 This Chrome extension evaluates the sustainability of electronic products by extracting product data from Amazon and analyzing it using Gemini AI. It provides a sustainability score based on key environmental factors such as e-waste generation, energy consumption, material longevity, recyclability, carbon footprint, and manufacturing impact.
